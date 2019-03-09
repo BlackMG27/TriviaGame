@@ -7,9 +7,7 @@ This is a geography inspired trivia game
    - the time would show up on top (sticky header)
    - if they choose the right answer, then they get a point, if not they get nothing
    - the game would keep track of the answers given
-     - keeps track with an array
-     - adds to the array and keeps track of the array's length
-   - have the questions show up randomly with Math.floor(math.random)
+   - have the questions show up randomly through the API
    - user would have to answer all of the questions
 4. If the user finishes all of the questions in the time frame
    - then a div of the total Tally shows up
