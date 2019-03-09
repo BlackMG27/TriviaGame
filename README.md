@@ -13,5 +13,5 @@ This is a geography inspired trivia game. It was inspired by the B-52 song, Roam
 4. If the user finishes all of the questions in the time frame
    - then a div of the total Tally shows up
    - if the user runs out of time
-     - the screen shows that they ran out of time
+     - the screen shows that they ran out of time and asks them to play again.
 5. The game resets itself
