@@ -1,5 +1,5 @@
 # TriviaGame
-This is a geography inspired trivia game. It was inspired by the B-52 song, Roam. The game is designed to test the user's knowledge of geopgraphy.
+This is a geography inspired trivia game. It was inspired by the B-52 song, [Roam](https://www.youtube.com/watch?v=iNwC0sp-uA4). The game is designed to test the user's knowledge of geopgraphy.
 
 ## The Rules of the Game Is As Follows:
 1. User gets to the first block and is asked to participate
