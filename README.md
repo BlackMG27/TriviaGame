@@ -1,6 +1,7 @@
 # TriviaGame
 This is a geography inspired trivia game
 
+## The Rules of the Game Is As Follows:
 1. User gets to the first block and is asked to participate
 2. if user clicks yes then it goes shows the questions
 3. user gets 330 seconds to answer 15 questions
