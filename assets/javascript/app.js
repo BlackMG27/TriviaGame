@@ -14,7 +14,7 @@ resultsDiv.addClass('results-container');
 //sets the timer display
 var qPageTitle = $('<h1>');
 qPageTitle.addClass('page-title');
-//sets the time functions
+//sets the timer functions
 var time = 5.5 * 60;
 var timeID;
 var currentTime;
@@ -23,6 +23,7 @@ var numCorrect;
 function timeGame() {
         //set the time to minus
         if (!isUserAnswering) {
+                //sets the timer to add the count function
                 timeID = setInterval(count, 1000);
                 isUserAnswering = true;
         }
@@ -30,10 +31,12 @@ function timeGame() {
 }
 
 function reset() {
+        //sets the time back to 330 seconds
         time = 5.5 * 60;
 }
 
 function stop() {
+        //stops the timer
         clearInterval(timeID);
 }
 
@@ -47,22 +50,26 @@ function count() {
         }
 
         if (time === 0 && !isUserAnswering) {
+                //stops the timer
                 clearInterval(timeID);
+                //sets the views
                 $('#sub-wrapper-questions').hide('fast');
                 $('#sub-wrapper-no-time').show('fast');
+                //sets the title
                 var noTimeTitle = $('<h1>');
                 noTimeTitle.addClass('no-time-title');
                 noTimeTitle.text('Oh No! You ran out of time!! Want to try again?');
-
+                //sets the button
                 var noTimeButton = $('<button>');
                 noTimeButton.addClass('no-time-button');
                 noTimeButton.attr('tabindex', '0');
                 noTimeButton.text('Try Again?');
-
+                //apends them to the page
                 $('#sub-wrapper-no-time').append(noTimeTitle, noTimeButton);
         }
         //sets time to the current time
         currentTime = timeConverter(time);
+        //puts the timer at the top of the page
         qPageTitle.text(currentTime);
 }
 
@@ -104,33 +111,31 @@ $('#sub-wrapper-no-time').hide();
 
 //main function
 $(document).ready(function () {
+        //activates when the user clicks the start game button
         $('#start-game')
                 .on('click', function () {
                         $('#sub-wrapper-start').hide('fast');
                         $('#sub-wrapper-questions').show('fast');
                         //sets the isUserAnswering to start the game
                         !isUserAnswering;
+                        //calls the timer
                         timeGame();
-
+                        //appends the timer to the page
                         questionContainer.append(qPageTitle);
-                        //add a timer
-
+                        //grabs the api
                         $
                                 .ajax({
                                         url: triviaURL,
                                         method: 'GET'
                                 })
+                                //then puts the questions and choices to the page
                                 .then(function (data) {
                                         console.log('we got this back!!', data);
 
                                         for (var i = 0; i < data.results.length; i++) {
+                                                //pushes the data to the questions array
                                                 questions.push(data.results[i]);
-                                                //console.log(questions[i]);
                                         }
-
-                                        // console.log('THIS IS OUR LENGTH~~ questions.length', questions.length);
-                                        // console.log(questions[0]); make the questions show up on random
-                                        // questions[Math.floor(Math.random() * questions.length)];
 
                                         for (var i = 0; i < questions.length; i++) {
                                                 //console.log('working'); create a div to put inside sub wrapper
@@ -154,29 +159,31 @@ $(document).ready(function () {
                                                 //add the attributes and the classes
                                                 correctAnsInput.attr('type', 'radio');
                                                 correctAnsInput.attr('value', questions[i].correct_answer);
-                                                correctAnsInput.addClass('correct')
-                                                // correctAnsInput.attr('required'); console.log('RIGHT BEFORE .name!!!',
-                                                // questions[i]);
+                                                correctAnsInput.addClass('correct');
+                                                correctAns.addClass('qChoice');
                                                 correctAnsInput.attr('tabindex', '0');
                                                 correctAnsInput.attr('name', questions[i].question);
+                                                //form validation
                                                 correctAnsInput.attr('required', 'true');
-                                                correctAns.addClass('qChoice');
                                                 //set the label text to the correct answer
                                                 correctAnsLabel.text(questions[i].correct_answer);
                                                 correctAns.append(correctAnsInput, correctAnsLabel);
                                                 // push all of them into the respective divs
                                                 questionInputs.append(correctAns);
                                                 //set up the incorrect Answers divs
-                                                for (var k = 0; k < questions[i].incorrect_answers.length; k++) {
+                                                for (var k = 0; k < questions[i].incorrect_answers.length; k++) { //sets the variables
                                                         var choice = $('<div>');
                                                         var choiceInput = $('<input>');
-                                                        var choiceLabel = $('<label>')
+                                                        var choiceLabel = $('<label>');
+                                                        //add classes and attributes
                                                         choiceInput.attr('type', 'radio');
                                                         choiceInput.attr('name', questions[i].question);
                                                         choiceInput.attr('value', questions[i].incorrect_answers[k]);
                                                         choiceInput.attr('tabindex', '0');
                                                         choice.addClass('qChoice');
+                                                        //set the text
                                                         choiceLabel.text(questions[i].incorrect_answers[k]);
+                                                        //appends the variables to the questionInput div
                                                         choice.append(choiceInput, choiceLabel);
                                                         questionInputs.append(choice);
                                                 }
@@ -215,7 +222,9 @@ $(document).ready(function () {
 
 
         $('form').on('submit', function (event) {
+                //prevents the default action
                 event.preventDefault();
+                //sets isUserAnswering back to it starting value
                 isUserAnswering = false;
                 //sets the time back to 5:30
                 stop();
@@ -223,51 +232,57 @@ $(document).ready(function () {
                 timeGame();
                 // take the values of the checked radio buttons. Got this from tutoring session
                 var values = $("input:checked");
-                console.log(values);
+                //needed to log the correct answers
                 numCorrect = 0;
                 for (var i = 0; i < values.length; i++) {
-                        console.log($(values[i]).hasClass("correct"));
+                        //if correct is in the input
                         if ($(values[i]).hasClass("correct")) {
+                                //add that to the numCorrect
                                 numCorrect++;
                         }
                 }
 
+                //sets the new views
                 $('#sub-wrapper-questions').hide('fast');
                 $('#sub-wrapper-no-time').hide();
                 $('#sub-wrapper-results').show('fast');
 
+                //creates the view contents
                 var resultsTitle = $('<h1>');
                 resultsTitle.addClass('results-title');
                 resultsTitle.text('Here are the results!');
 
                 var resultsTally = $('<h2>');
                 resultsTally.addClass('results-tally');
-
                 resultsTally.text('You got ' + numCorrect + ' out of ' + questions.length + '!');
 
                 var resultsButton = $('<button>');
                 resultsButton.addClass('results-button');
                 resultsButton.attr('tabindex', '0');
                 resultsButton.text('Replay Game?');
-
+                //adds the variables to the view
                 resultsDiv.append(resultsTitle, resultsTally, resultsButton);
                 $('#sub-wrapper-results').append(resultsDiv);
-                console.log('This works!');
+                //sets the questions.length back to zero
                 questions = [];
-                console.log(questions);
+                //makes sure that questions.length is back to zero
                 questionReset();
 
         });
 
         $(document).on('click', '.results-button', function () {
+                //sets the views
                 $('#sub-wrapper-results').hide('fast');
                 $('#sub-wrapper-start').show('fast');
+                //prevents the results from duplicating
                 resultsReset();
         });
 
         $(document).on('click', '.no-time-button', function () {
+                //sets the views
                 $('#sub-wrapper-no-time').hide('fast');
                 $('#sub-wrapper-start').show('fast');
+                //clears and resets the timer
                 stop();
                 reset();
                 timeGame();
