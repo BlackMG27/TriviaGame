@@ -15,7 +15,7 @@ resultsDiv.addClass('results-container');
 var qPageTitle = $('<h1>');
 qPageTitle.addClass('page-title');
 //sets the timer functions
-var time = 5.5 * 60;
+var time;
 var timeID;
 var currentTime;
 var numCorrect;
@@ -33,39 +33,16 @@ function timeGame() {
 function reset() {
         //sets the time back to 330 seconds
         time = 5.5 * 60;
-}
-
-function stop() {
-        //stops the timer
-        clearInterval(timeID);
+        qPageTitle.text('05:30');
 }
 
 function count() {
         //set the decrement
         time--;
-        //if the time is equal to zero
         if (time === 0) {
                 //clear the interval
                 clearInterval(timeID);
-        }
-
-        if (time === 0 && !isUserAnswering) {
-                //stops the timer
-                clearInterval(timeID);
-                //sets the views
-                $('#sub-wrapper-questions').hide('fast');
-                $('#sub-wrapper-no-time').show('fast');
-                //sets the title
-                var noTimeTitle = $('<h1>');
-                noTimeTitle.addClass('no-time-title');
-                noTimeTitle.text('Oh No! You ran out of time!! Want to try again?');
-                //sets the button
-                var noTimeButton = $('<button>');
-                noTimeButton.addClass('no-time-button');
-                noTimeButton.attr('tabindex', '0');
-                noTimeButton.text('Try Again?');
-                //apends them to the page
-                $('#sub-wrapper-no-time').append(noTimeTitle, noTimeButton);
+                endGame();
         }
         //sets time to the current time
         currentTime = timeConverter(time);
@@ -104,6 +81,24 @@ function resultsReset() {
         return resultsRemove;
 }
 
+function endGame() {
+        console.log('this is working');
+        //sets the views
+        $('#sub-wrapper-questions').hide('fast');
+        $('#sub-wrapper-no-time').show('fast');
+        //sets the title
+        var noTimeTitle = $('<h1>');
+        noTimeTitle.addClass('no-time-title');
+        noTimeTitle.text('Oh No! You ran out of time!! Want to try again?');
+        //sets the button
+        var noTimeButton = $('<button>');
+        noTimeButton.addClass('no-time-button');
+        noTimeButton.attr('tabindex', '0');
+        noTimeButton.text('Try Again?');
+        //appends them to the page
+        $('#sub-wrapper-no-time').append(noTimeTitle, noTimeButton);
+}
+
 //set up initial views
 $('#sub-wrapper-questions').hide();
 $('#sub-wrapper-results').hide();
@@ -116,9 +111,9 @@ $(document).ready(function () {
                 .on('click', function () {
                         $('#sub-wrapper-start').hide('fast');
                         $('#sub-wrapper-questions').show('fast');
-                        //sets the isUserAnswering to start the game
-                        !isUserAnswering;
+                        questionReset();
                         //calls the timer
+                        reset();
                         timeGame();
                         //appends the timer to the page
                         questionContainer.append(qPageTitle);
@@ -228,8 +223,6 @@ $(document).ready(function () {
                 isUserAnswering = false;
                 //sets the time back to 5:30
                 stop();
-                reset();
-                timeGame();
                 // take the values of the checked radio buttons. Got this from tutoring session
                 var values = $("input:checked");
                 //needed to log the correct answers
@@ -282,10 +275,14 @@ $(document).ready(function () {
                 //sets the views
                 $('#sub-wrapper-no-time').hide('fast');
                 $('#sub-wrapper-start').show('fast');
-                //clears and resets the timer
-                stop();
+                //sets the questions.length back to zero
+                questions = [];
+                //makes sure that questions.length is back to zero
+                questionReset();
+                //resets the timer
                 reset();
                 timeGame();
+
         });
 
 });
