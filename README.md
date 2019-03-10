@@ -10,7 +10,7 @@ This is a geography inspired trivia game. It was inspired by the B-52 song, [Roa
    - the game would keep track of the answers given
    - have the questions show up randomly through the API
    - user would have to answer all of the questions
-4. If the user finishes all of the questions in the time frame
+4. If the user finishes all of the questions and submits the questions in the time frame
    - then a div of the total Tally shows up
    - if the user runs out of time
      - the screen shows that they ran out of time and asks them to play again.
